@@ -39,8 +39,6 @@ public class Item {
 		return id;
 	}
 	
-	
-
 	public String getName() {
 		return name;
 	}
@@ -72,7 +70,20 @@ public class Item {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Item [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", descrition=");
+		builder.append(descrition);
+		builder.append(", cost=");
+		builder.append(cost);
+		builder.append("]");
+		return builder.toString();
+	}
 	
 }

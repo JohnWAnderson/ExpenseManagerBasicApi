@@ -31,11 +31,17 @@ public class ApiController {
 	@Autowired
 	private ItemRepository itemRepository;
 	
+	/*
+	 * Gets all User Information
+	 */
 	@GetMapping(path="/user")
 	public @ResponseBody Iterable<User> getAllUsers() {
 		return userRepository.findAll();
 	}
 	
+	/*
+	 * Post request for adding user
+	 */
 	@PostMapping(path="/user")
 	public void createUser(@RequestBody  User user){
 		user.setItems(new ArrayList<>());
@@ -44,6 +50,9 @@ public class ApiController {
 		userRepository.save(user);
 	}
 	
+	/*
+	 * Put request for updating user
+	 */
 	@PutMapping("/user/{userID}")
 	public ResponseEntity<Object> updateUser(@RequestBody  User user, @PathVariable int userID) {
 		Optional<User> theUserOption = userRepository.findById(userID);
@@ -55,27 +64,40 @@ public class ApiController {
 		return null;
 	}	
 	
+	
+	/*
+	 * Gets a specific user information
+	 */
 	@GetMapping("/user/{userID}")
-	public Optional<User> getUser(@PathVariable int userID) {
+	public @ResponseBody Optional<User> getUser(@PathVariable int userID) {
 		Optional<User> theUser = userRepository.findById(userID);
 		if(!theUser.isPresent()) 
 			throw new NotFoundApi("Didn't find user");
 		return theUser;
 	}	
 	
+	/*
+	 * delete request for specific user
+	 */
 	@DeleteMapping("/user/{userID}")
 	public void deleteUser(@PathVariable int userID) {
 		userRepository.deleteById(userID);
 	}
-
+	
+	/*
+	 * delete request for specific userName
+	 */	
 	@GetMapping(path="/userName/{userName}")
-	public Optional<User> getUserId(@PathVariable String userName) {
+	public @ResponseBody Optional<User> getUserId(@PathVariable String userName) {
 		Optional<User> theUser = userRepository.findByUsername(userName);
 		if(!theUser.isPresent()) 
 			throw new NotFoundApi("Didn't find user");
 		return theUser;
 	}
 	
+	/*
+	 * get item list by specific user
+	 */
 	@GetMapping(path="/user/{userID}/item")
 	@CrossOrigin("http://localhost:8080")
 	public @ResponseBody List<Item>  getAllItems(@PathVariable int userID) {
@@ -86,6 +108,9 @@ public class ApiController {
 		
 	}
 	
+	/*
+	 * adds an item to a specific user
+	 */
 	@PostMapping(path="/user/{userID}/item")
 	public void createItem(@RequestBody Item item, @PathVariable int userID){
 		Optional<User> userOption = userRepository.findById(userID);
@@ -96,14 +121,20 @@ public class ApiController {
 		itemRepository.save(item);
 	}
 	
+	/*
+	 * gets a specific item form a specific user
+	 */
 	@GetMapping("/user/{userID}/item/{itemID}")
-	public Optional<Item> getItem(@PathVariable int userID, @PathVariable int itemID) {
+	public @ResponseBody Optional<Item> getItem(@PathVariable int userID, @PathVariable int itemID) {
 		Optional<Item> theItem =  itemRepository.findById(itemID);
 		if(!theItem.isPresent() || theItem.get().getUser().getId() != userID) 
 			throw new NotFoundApi("User have that item");
 		return theItem;
 	}
 	
+	/*
+	 * updates an item to a specific user
+	 */
 	@PutMapping("/user/{userID}/item/{itemID}")
 	public ResponseEntity<Object> updateUserItem(@RequestBody  Item item, @PathVariable int userID, @PathVariable int itemID) {
 		Optional<Item> itemOption = itemRepository.findById(itemID);
@@ -120,6 +151,9 @@ public class ApiController {
 		return null;
 	}	
 	
+	/*
+	 * deletes an item from a specific user
+	 */
 	@DeleteMapping("/user/{userID}/item/{itemID}")
 	public void deleteUserItem(@PathVariable int userID, @PathVariable int itemID ) {
 		Optional<Item> itemOption = itemRepository.findById(itemID);

@@ -74,5 +74,21 @@ public class User {
 		this.items = items;
 	}
 
-	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User [id=");
+		builder.append(id);
+		builder.append(", username=");
+		builder.append(username);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append(", items=");
+		builder.append(items);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
